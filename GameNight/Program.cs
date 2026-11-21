@@ -36,6 +36,38 @@ Console.WriteLine($"{players.PadRight(11)} {points}");
 }
 Console.WriteLine($"Leader: {line_players[(int)leaderIndex]} with {leader}");
 Console.WriteLine($"Season total: {total}");
+
+
+int tonightWinner = 0;
+int tonightWinnerPoints = -1; 
+
+//For: Need to compile all of tonight's scores in a specific order to be with their respective player.
+for (int i = 0; i < line_players.Length; i++)
+{
+    int nightScore = 0;
+    Console.Write($"Points tonight for {line_players[i]}: ");
+    nightScore = Convert.ToInt32(Console.ReadLine());
+
+    //While: We can't know how many times a person will input a number outside of the range so it keeps asking until the input is in the set range.
+    while (nightScore < 0 || nightScore > 20)
+    {
+        Console.WriteLine("Points must be from 0 to 20.");
+        Console.Write($"Points tonight for {line_players[i]}: ");
+        nightScore = Convert.ToInt32(Console.ReadLine());
+    }
+    int season = Convert.ToInt32(line_points[i]) + nightScore;
+    line_points[i] = season.ToString();
+    if(nightScore > tonightWinnerPoints)
+    {
+        tonightWinnerPoints = nightScore;
+        tonightWinner = i;
+    }
+}
+Console.WriteLine($"Tonight's winner: {line_players[tonightWinner]} with {tonightWinnerPoints}");
+
+File.WriteAllLines(POINTS_FILE, line_points);
+Console.WriteLine("Saved points.txt.");
+
 /*
 int finalLeader = LeaderIndex(line_points);
 
